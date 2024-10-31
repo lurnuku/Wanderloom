@@ -16,6 +16,9 @@ $black: #3E3E42;
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+
+    color: $secondary;
+    background: $primary;
 }
 
 img,

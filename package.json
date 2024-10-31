@@ -45,6 +45,8 @@
     "i18next": "^23.15.2",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-i18next": "^15.0.3"
+    "react-i18next": "^15.0.3",
+    "uuid": "^11.0.2",
+    "ws": "^8.18.0"
   }
 }
