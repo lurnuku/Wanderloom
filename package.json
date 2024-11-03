@@ -44,9 +44,12 @@
   "dependencies": {
     "@types/node": "^22.8.6",
     "i18next": "^23.15.2",
+    "lodash.throttle": "^4.1.1",
+    "perfect-cursors": "^1.0.5",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-i18next": "^15.0.3",
+    "react-use-websocket": "^4.10.1",
     "uuid": "^11.0.2",
     "ws": "^8.18.0"
   }

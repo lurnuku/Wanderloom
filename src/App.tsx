@@ -1,4 +1,6 @@
-import React from 'react'
+import React, {
+  useState,
+} from 'react'
 
 import {
   BrowserRouter,
@@ -7,16 +9,22 @@ import {
   Redirect
 } from 'react-router-dom'
 
-import Homepage from './comonents/Homepage'
+import Homepage from './components/Homepage'
+import Maze from './components/Maze'
 
 
 const App: React.FC = () => {
+  const [username, setUsername] = useState('')
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path='/'>
-          <Homepage />
+          {
+            username ?
+              <Maze username={username} /> :
+              <Homepage onSubmit={setUsername} />
+          }
         </Route>
         <Route exact path='/page-not-found'>
         </Route>
