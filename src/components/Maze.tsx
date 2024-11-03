@@ -7,14 +7,27 @@ import useWebSocket from 'react-use-websocket'
 
 import throttle from 'lodash.throttle'
 
+import { Cursor } from './Cursor'
+
 
 interface Props {
     username: string
 }
 
 const Maze: React.FC<Props> = ({ username }) => {
-    const renderCursors = () => {
-        return Object.keys(users)
+    const renderCursors = (users) => {
+        return Object.keys(users).map((uuid) => {
+            const user = users[uuid]
+            return (
+                <Cursor
+                    key={user}
+                    point={[
+                        user.state.x,
+                        user.state.y,
+                    ]}
+                />
+            )
+        })
     }
 
     const {
@@ -25,9 +38,14 @@ const Maze: React.FC<Props> = ({ username }) => {
         queryParams: { username }
     })
 
-    const sendJsonMessageThrottled = useRef(throttle(sendJsonMessage, 25))
+    const sendJsonMessageThrottled = useRef(throttle(sendJsonMessage, 80))
 
     useEffect(() => {
+        sendJsonMessage({
+            x: 0,
+            y: 0,
+        })
+
         window.addEventListener('mousemove', (e) => {
             sendJsonMessageThrottled.current({
                 x: e.clientX,
@@ -45,7 +63,7 @@ const Maze: React.FC<Props> = ({ username }) => {
     }
 
     return (
-        <div>
+        <div className='custom-cursor'>
             Hello {username}
         </div>
     )
