@@ -11,7 +11,7 @@ const Homepage: React.FC<Props> = ({ onSubmit }) => {
     const [username, setUsername] = useState('')
 
     return (
-        <>
+        <div className='homepage'>
             <form
                 onSubmit={(e) => {
                     e.preventDefault()
@@ -23,7 +23,7 @@ const Homepage: React.FC<Props> = ({ onSubmit }) => {
                     placeholder='username'
                     onChange={(e) => setUsername(e.target.value)} />
             </form>
-        </>
+        </div>
     )
 }
 

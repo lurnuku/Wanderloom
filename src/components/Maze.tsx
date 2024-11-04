@@ -1,6 +1,7 @@
 import React, {
     useEffect,
     useRef,
+    useState,
 } from 'react'
 
 import useWebSocket from 'react-use-websocket'
@@ -14,17 +15,26 @@ interface Props {
     username: string
 }
 
+interface Cursors {
+    [uuid: string]: {
+        username: string
+        state: {
+            x: number
+            y: number
+        }
+    }
+}
+
 const Maze: React.FC<Props> = ({ username }) => {
-    const renderCursors = (users) => {
+    const [cursors, setCursors] = useState<Cursors | null>(null)
+
+    const renderCursors = (users: Cursors) => {
         return Object.keys(users).map((uuid) => {
             const user = users[uuid]
             return (
                 <Cursor
-                    key={user}
-                    point={[
-                        user.state.x,
-                        user.state.y,
-                    ]}
+                    key={uuid}
+                    point={[user.state.x, user.state.y]}
                 />
             )
         })
@@ -33,38 +43,48 @@ const Maze: React.FC<Props> = ({ username }) => {
     const {
         sendJsonMessage,
         lastJsonMessage,
-    } = useWebSocket('ws:///127.0.0.1:8000', {
+    } = useWebSocket('ws://127.0.0.1:8000', {
         share: true,
-        queryParams: { username }
+        queryParams: { username },
     })
 
     const sendJsonMessageThrottled = useRef(throttle(sendJsonMessage, 80))
 
     useEffect(() => {
         sendJsonMessage({
-            x: 0,
-            y: 0,
+            x: window.innerWidth / 2,
+            y:  window.innerHeight / 2,
         })
 
-        window.addEventListener('mousemove', (e) => {
+        const handleMouseMove = (e: MouseEvent) => {
             sendJsonMessageThrottled.current({
                 x: e.clientX,
                 y: e.clientY,
             })
-        })
+        }
+
+        window.addEventListener('mousemove', handleMouseMove)
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+        }
     }, [])
 
-    if (lastJsonMessage) {
-        return (
-            <div>
-                {renderCursors(lastJsonMessage)}
-            </div>
-        )
-    }
+    useEffect(() => {
+        if (lastJsonMessage && typeof lastJsonMessage === 'object') {
+            setCursors(lastJsonMessage as Cursors)
+        }
+    }, [lastJsonMessage])
 
     return (
-        <div className='custom-cursor'>
-            Hello {username}
+        <div className='no-cursor'>
+            <div>
+                {
+                    cursors ?
+                        renderCursors(cursors) :
+                        <p>No cursor data available yet.</p>
+                }
+            </div>
         </div>
     )
 }

@@ -24,11 +24,19 @@ const broadcast = () => {
     })
 }
 
+const getDefaultState = (width, height) => ({
+    x: width / 2,
+    y: height / 2,
+})
+
 const handleMessage = (buffer, uuid) => {
     const message = JSON.parse(buffer.toString())
-    const user = users[uuid]
 
-    user.state = message
+    if (message.width && message.height && !users[uuid].state) {
+        users[uuid].state = getDefaultState(message.width, message.height)
+    } else {
+        users[uuid].state = message
+    }
 
     broadcast()
 }
@@ -42,19 +50,16 @@ const handleClose = (uuid) => {
 
 wsServer.on('connection', (connection, request) => {
     const { username } = request && url.parse(request.url, true).query
-    console.log(username)
     const uuid = uuidv4()
 
     connections[uuid] = connection
 
     users[uuid] = {
         username,
-        state: {}
+        state: null,
     }
 
-    connection.on('message', (message) => {
-        handleMessage(message, uuid)
-    })
-
+    connection.send(JSON.stringify(users))
+    connection.on('message', (message) => { handleMessage(message, uuid) })
     connection.on('close', () => handleClose(uuid))
 })

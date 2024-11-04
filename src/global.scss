@@ -64,3 +64,16 @@ h6 {
 #__next {
     isolation: isolate;
 }
+
+.no-cursor {
+    cursor: none;
+    background-color: #FFF0DB;
+}
+
+.homepage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
