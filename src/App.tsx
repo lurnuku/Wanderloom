@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom'
 
 import Homepage from './components/Homepage'
-import Maze from './components/Maze'
+import Main from './components/Main'
 
 
 const App: React.FC = () => {
@@ -22,7 +22,7 @@ const App: React.FC = () => {
         <Route exact path='/'>
           {
             username ?
-              <Maze username={username} /> :
+              <Main username={username} /> :
               <Homepage onSubmit={setUsername} />
           }
         </Route>
