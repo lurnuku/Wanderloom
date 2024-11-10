@@ -65,9 +65,18 @@ h6 {
     isolation: isolate;
 }
 
-.no-cursor {
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.main-container {
     cursor: none;
-    background-color: #FFF0DB;
+    width: 80vw;
+    height: 80vh;
+    border: 1px solid #A020F0;
 }
 
 .homepage {
