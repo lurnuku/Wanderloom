@@ -16,6 +16,7 @@ import { Cursor } from './Cursor'
 
 interface Props {
     username: string
+    playerColor: string
 }
 
 interface Cursors {
@@ -31,7 +32,10 @@ interface Cursors {
 const THROTTLE_MS = 16
 const WS_URL = 'ws://127.0.0.1:8000'
 
-const Main: React.FC<Props> = ({ username }) => {
+const Main: React.FC<Props> = ({
+    username,
+    playerColor,
+}) => {
     const [cursors, setCursors] = useState<Cursors | null>(null)
     const cursorRef = useRef<Cursors | null>(null)
     const mazeRef = useRef<SVGSVGElement>(null)
@@ -41,7 +45,7 @@ const Main: React.FC<Props> = ({ username }) => {
         lastJsonMessage,
         readyState,
     } = useWebSocket(WS_URL, {
-        share: false, // When false, instances  don't affect each other
+        share: false, // When false, instances (player's 'connection')  don't affect each other
         queryParams: { username },
         reconnectInterval: 3000,
         reconnectAttempts: 10,
@@ -131,6 +135,7 @@ const Main: React.FC<Props> = ({ username }) => {
                         key={uuid}
                         point={[user.state.x, user.state.y]}
                         onCursorMove={() => didCursorHitWall(uuid)}
+                        playerColor={playerColor}
                     />
                 )
             })

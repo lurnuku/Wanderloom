@@ -15,6 +15,12 @@ import Main from './components/Main'
 
 const App: React.FC = () => {
   const [username, setUsername] = useState('')
+  const [playerColor, setPlayerColor] = useState('')
+
+  const handleSubmit = (newUsername: string, newColor: string) => {
+    setUsername(newUsername)
+    setPlayerColor(newColor)
+  }
 
   return (
     <BrowserRouter>
@@ -22,8 +28,11 @@ const App: React.FC = () => {
         <Route exact path='/'>
           {
             username ?
-              <Main username={username} /> :
-              <Homepage onSubmit={setUsername} />
+              <Main
+                username={username}
+                playerColor={playerColor}
+              /> :
+              <Homepage onSubmit={handleSubmit} />
           }
         </Route>
         <Route exact path='/page-not-found'>

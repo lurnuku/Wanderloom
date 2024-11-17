@@ -6,7 +6,7 @@ An almost real-time multiplayer maze exploration game where two players must col
 - DONE - at launch, show the shared cursor in the middle of the screen
 - DONE - remove own cursor, leave just the shared one and other user's one
 - graphical interface (svg of a maze)
-- make players different colors or different characters
+- let players choose their ghost color
 - wall detection with svg-path-bounds or getBoundingClientRect()
 - review the logic for setting up the state (position) at launch
 - on the client -> if players === 2 only then render the start button

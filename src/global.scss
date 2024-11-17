@@ -87,6 +87,11 @@ h6 {
     height: 100vh;
 }
 
+.homepage-form {
+    display: flex;
+    flex-direction: column;
+}
+
 .maze-path {
     width: 100%;
     height: 100%;

@@ -5,11 +5,13 @@ import { PerfectCursor } from 'perfect-cursors'
 interface Props {
     point: number[]
     onCursorMove?: () => void
+    playerColor: string
 }
 
 export const Cursor: React.FC<Props> = ({
     point,
     onCursorMove,
+    playerColor,
 }) => {
     function usePerfectCursor(
         cb: (point: number[]) => void,
@@ -56,8 +58,8 @@ export const Cursor: React.FC<Props> = ({
                 position: 'absolute',
                 top: -15,
                 left: -15,
-                width: 26,
-                height: 26,
+                width: 22,
+                height: 22,
                 pointerEvents: 'none',
             }}
             xmlns='http://www.w3.org/2000/svg'
@@ -65,11 +67,7 @@ export const Cursor: React.FC<Props> = ({
         >
             <defs>
                 <style>
-                    {`
-            .cls-1 {
-              fill: #ff69b4;
-            }
-          `}
+                    {`.cls-1 {fill: ${playerColor};}`}
                 </style>
             </defs>
             <g>
