@@ -15,7 +15,7 @@ import Main from './components/Main'
 
 const App: React.FC = () => {
   const [username, setUsername] = useState('')
-  const [playerColor, setPlayerColor] = useState('')
+  const [playerColor, setPlayerColor] = useState('#070000')
 
   const handleSubmit = (newUsername: string, newColor: string) => {
     setUsername(newUsername)

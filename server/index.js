@@ -49,7 +49,7 @@ const handleClose = (uuid) => {
 }
 
 wsServer.on('connection', (connection, request) => {
-    const { username } = request && url.parse(request.url, true).query
+    const { username, playerColor } = request && url.parse(request.url, true).query
     const uuid = uuidv4()
 
     connections[uuid] = connection
@@ -57,6 +57,7 @@ wsServer.on('connection', (connection, request) => {
     users[uuid] = {
         username,
         state: null,
+        playerColor,
     }
 
     connection.send(JSON.stringify(users))

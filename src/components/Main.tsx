@@ -26,6 +26,7 @@ interface Cursors {
             x: number
             y: number
         } | null
+        playerColor: string
     }
 }
 
@@ -44,18 +45,25 @@ const Main: React.FC<Props> = ({
         sendJsonMessage,
         lastJsonMessage,
         readyState,
-    } = useWebSocket(WS_URL, {
-        share: false, // When false, instances (player's 'connection')  don't affect each other
-        queryParams: { username },
-        reconnectInterval: 3000,
-        reconnectAttempts: 10,
-        shouldReconnect: () => true,
-    })
+    } = useWebSocket(
+        `${WS_URL}?username=${encodeURIComponent(username)}&playerColor=${encodeURIComponent(playerColor)}`,
+        {
+            share: false, // When false, instances (player's 'connection')  don't affect each other
+            reconnectInterval: 3000,
+            reconnectAttempts: 10,
+            shouldReconnect: () => true,
+        }
+    )
+
 
     const sendThrottledMessage = useCallback(
         throttle((x: number, y: number) => {
             if (readyState === ReadyState.OPEN) {
-                sendJsonMessage({ x, y })
+                sendJsonMessage({
+                    x,
+                    y,
+                    playerColor,
+                })
             }
         }, THROTTLE_MS, { leading: true, trailing: true }),
         [readyState, sendJsonMessage]
@@ -68,6 +76,7 @@ const Main: React.FC<Props> = ({
                 height: window.innerHeight,
                 x: window.innerWidth / 2,
                 y: window.innerHeight / 2,
+                playerColor: playerColor,
             })
         }
     }, [readyState])
@@ -110,9 +119,7 @@ const Main: React.FC<Props> = ({
         const screenCTM = svg.getScreenCTM()
         if (!screenCTM) return
 
-        // Transform the point using the inverse of the matrix
         const cursorPoint = svgPoint.matrixTransform(screenCTM.inverse())
-        console.log(cursorPoint)
 
         const isOnStroke = path.isPointInStroke(cursorPoint)
         const isOnFill = path.isPointInFill(cursorPoint)
@@ -130,12 +137,13 @@ const Main: React.FC<Props> = ({
         return Object.entries(users)
             .map(([uuid, user]) => {
                 if (!user?.state) return null
+                console.log(user)
                 return (
                     <Cursor
                         key={uuid}
                         point={[user.state.x, user.state.y]}
                         onCursorMove={() => didCursorHitWall(uuid)}
-                        playerColor={playerColor}
+                        playerColor={user.playerColor || '#000000'}
                     />
                 )
             })
