@@ -139,12 +139,15 @@ const Main: React.FC<Props> = ({
                 if (!user?.state) return null
                 console.log(user)
                 return (
-                    <Cursor
-                        key={uuid}
-                        point={[user.state.x, user.state.y]}
-                        onCursorMove={() => didCursorHitWall(uuid)}
-                        playerColor={user.playerColor || '#000000'}
-                    />
+                    <>
+                        <Cursor
+                            key={uuid}
+                            point={[user.state.x, user.state.y]}
+                            onCursorMove={() => didCursorHitWall(uuid)}
+                            playerColor={user.playerColor || '#000000'}
+                            username={user.username}
+                        />
+                    </>
                 )
             })
             .filter(Boolean)
