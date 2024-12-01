@@ -34,8 +34,12 @@ const handleMessage = (buffer, uuid) => {
 
     if (message.width && message.height && !users[uuid].state) {
         users[uuid].state = getDefaultState(message.width, message.height)
-    } else {
-        users[uuid].state = message
+    } else if (message.x !== undefined && message.y !== undefined) {
+        // Only update position, preserve other user properties
+        users[uuid].state = {
+            x: message.x,
+            y: message.y
+        }
     }
 
     broadcast()
