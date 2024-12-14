@@ -6,16 +6,16 @@ import {
   BrowserRouter,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from 'react-router-dom'
 
-import Homepage from './components/Homepage'
+import Welcome from './components/Welcome'
 import Main from './components/Main'
 
 
 const App: React.FC = () => {
-  const [username, setUsername] = useState('')
-  const [playerColor, setPlayerColor] = useState('#070000')
+  const [username, setUsername] = useState<string>('')
+  const [playerColor, setPlayerColor] = useState<string>('#070000')
 
   const handleSubmit = (newUsername: string, newColor: string) => {
     setUsername(newUsername)
@@ -32,7 +32,7 @@ const App: React.FC = () => {
                 username={username}
                 playerColor={playerColor}
               /> :
-              <Homepage onSubmit={handleSubmit} />
+              <Welcome onSubmit={handleSubmit} />
           }
         </Route>
         <Route exact path='/page-not-found'>

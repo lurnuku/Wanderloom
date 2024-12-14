@@ -35,17 +35,29 @@ export const Cursor: React.FC<Props> = ({
     }
 
     const rCursor = React.useRef<SVGSVGElement>(null)
+    const rUsername = React.useRef<HTMLDivElement>(null)
 
     const animateCursor = React.useCallback((point: number[]) => {
         const elm = rCursor.current
-        if (!elm) return
-        elm.style.setProperty(
-            'transform',
-            `translate(${point[0]}px, ${point[1]}px)`
-        )
+        const userInfoElm = rUsername.current
 
-        if (onCursorMove) {
-            onCursorMove()
+        if (elm && userInfoElm instanceof HTMLDivElement) {
+
+            // positions the cursor
+            elm.style.setProperty(
+                'transform',
+                `translate(${point[0]}px, ${point[1]}px)`
+            )
+
+            // positions the username
+            userInfoElm.style.setProperty(
+                'transform',
+                `translate(${point[0]}px, ${point[1] - 30}px)`
+            )
+
+            if (onCursorMove) {
+                onCursorMove()
+            }
         }
     }, [onCursorMove])
 
@@ -55,20 +67,16 @@ export const Cursor: React.FC<Props> = ({
 
     return (
         <>
-            <div>
-                {username}
-                {playerColor}
+            <div
+                ref={rUsername}
+                className='cursor-username'
+                style={{ color: playerColor }}
+            >
+                {username.slice(0, 1).toUpperCase()}
             </div>
             <svg
                 ref={rCursor}
-                style={{
-                    position: 'absolute',
-                    top: -15,
-                    left: -15,
-                    width: 22,
-                    height: 22,
-                    pointerEvents: 'none',
-                }}
+                className='cursor-ghost'
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 26 26'
             >

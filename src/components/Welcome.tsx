@@ -10,25 +10,29 @@ interface Props {
     ) => void
 }
 
-const Homepage: React.FC<Props> = ({ onSubmit }) => {
+const Welcome: React.FC<Props> = ({ onSubmit }) => {
     const [username, setUsername] = useState('')
     const [playerColor, setPlayerColor] = useState('#000000')
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        if (username.trim() && playerColor) {
+        if (username && playerColor) {
             onSubmit(username.trim(), playerColor)
         }
     }
 
     return (
-        <div className='homepage'>
-            <form className='homepage-form' onSubmit={handleSubmit}>
+        <div className='welcome'>
+            <form
+                className='welcome-form'
+                onSubmit={handleSubmit}
+            >
                 <input
                     type='text'
                     value={username}
                     placeholder='username'
                     onChange={(e) => setUsername(e.target.value)}
+                    maxLength={15}
                     required
                 />
                 <input
@@ -36,12 +40,15 @@ const Homepage: React.FC<Props> = ({ onSubmit }) => {
                     value={playerColor}
                     onChange={(e) => setPlayerColor(e.target.value)}
                 />
-                <button type='submit' disabled={!username.trim()}>
-                    Submit
+                <button
+                    type='submit'
+                    disabled={!username.trim()}
+                >
+                    Join a room
                 </button>
             </form>
         </div>
     )
 }
 
-export default Homepage
+export default Welcome
