@@ -24,7 +24,7 @@ const broadcast = () => {
     })
 }
 
-const getDefaultState = (width, height) => ({
+const getDefaultPosition = (width, height) => ({
     x: width / 2,
     y: height / 2,
 })
@@ -32,11 +32,11 @@ const getDefaultState = (width, height) => ({
 const handleMessage = (buffer, uuid) => {
     const message = JSON.parse(buffer.toString())
 
-    if (message.width && message.height && !users[uuid].state) {
-        users[uuid].state = getDefaultState(message.width, message.height)
+    if (message.width && message.height && !users[uuid].position) {
+        users[uuid].position = getDefaultPosition(message.width, message.height)
     } else if (message.x !== undefined && message.y !== undefined) {
         // Only update position, preserve other user properties
-        users[uuid].state = {
+        users[uuid].position = {
             x: message.x,
             y: message.y
         }
@@ -58,9 +58,9 @@ wsServer.on('connection', (connection, request) => {
 
     connections[uuid] = connection
 
-    users[uuid] = {
+    users[uuid] = users[uuid] || {
         username,
-        state: null,
+        position: null,
         playerColor,
     }
 

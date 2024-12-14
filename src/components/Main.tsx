@@ -22,7 +22,7 @@ interface Props {
 interface Cursors {
     [uuid: string]: {
         username: string
-        state: {
+        position: {
             x: number
             y: number
         } | null
@@ -113,8 +113,8 @@ const Main: React.FC<Props> = ({
         if (!svg || !path || !cursorRef.current || !cursorRef.current[uuid]) return
 
         const svgPoint = svg.createSVGPoint()
-        svgPoint.x = cursorRef.current[uuid].state?.x ?? 0
-        svgPoint.y = cursorRef.current[uuid].state?.y ?? 0
+        svgPoint.x = cursorRef.current[uuid].position?.x ?? 0
+        svgPoint.y = cursorRef.current[uuid].position?.y ?? 0
 
         const screenCTM = svg.getScreenCTM()
         if (!screenCTM) return
@@ -136,13 +136,13 @@ const Main: React.FC<Props> = ({
     const renderCursors = useCallback((users: Cursors) => {
         return Object.entries(users)
             .map(([uuid, user]) => {
-                if (!user?.state) return null
+                if (!user?.position) return null
                 console.log(user)
                 return (
                     <>
                         <Cursor
                             key={uuid}
-                            point={[user.state.x, user.state.y]}
+                            point={[user.position.x, user.position.y]}
                             onCursorMove={() => didCursorHitWall(uuid)}
                             playerColor={user.playerColor || '#000000'}
                             username={user.username}
