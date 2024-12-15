@@ -125,11 +125,11 @@ const Main: React.FC<Props> = ({
         const isOnFill = path.isPointInFill(cursorPoint)
 
         if (isOnStroke) {
-            console.log('Cursor is on the stroke!')
+           // console.log('Cursor is on the stroke!')
         } else if (isOnFill) {
-            console.log('Cursor is on the fill!')
+           // console.log('Cursor is on the fill!')
         } else {
-            console.log('Cursor is outside the path.')
+           // console.log('Cursor is outside the path.')
         }
     }
 
@@ -137,17 +137,14 @@ const Main: React.FC<Props> = ({
         return Object.entries(users)
             .map(([uuid, user]) => {
                 if (!user?.position) return null
-                console.log(user)
                 return (
-                    <>
-                        <Cursor
-                            key={uuid}
-                            point={[user.position.x, user.position.y]}
-                            onCursorMove={() => didCursorHitWall(uuid)}
-                            playerColor={user.playerColor || '#000000'}
-                            username={user.username}
-                        />
-                    </>
+                    <Cursor
+                        key={uuid}
+                        point={[user.position.x, user.position.y]}
+                        onCursorMove={() => didCursorHitWall(uuid)}
+                        playerColor={user.playerColor}
+                        username={user.username}
+                    />
                 )
             })
             .filter(Boolean)
